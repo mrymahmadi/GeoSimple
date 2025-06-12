@@ -42,6 +42,7 @@ class Application {
     app.use(express.urlencoded({ extended: true }));
     app.use(bodyParser.json());
     app.use(routes);
+    require("./swagger-setup")(app);
   }
 
   startServer() {
