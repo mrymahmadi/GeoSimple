@@ -155,7 +155,9 @@ class CoordinatesCtrl {
       });
 
       await newLineStr.save();
-      return res.status(201).json({ response: "مسیر جدید اضافه شد" });
+      return res
+        .status(201)
+        .json({ response: "مسیر جدید اضافه شد", data: newLineStr });
     } catch (err) {
       console.error("newLineStr error this: ", err);
       return res.status(500).json({ response: "خطای سرور" });
