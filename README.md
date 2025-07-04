@@ -27,5 +27,5 @@ It stores four forms of coordinates.
 ## swagger
 Swagger documents of this project are located at this address:  
 ```
-http://185.255.88.110:1766/api-docs
+http://localhost:5400/api-docs
 ```
