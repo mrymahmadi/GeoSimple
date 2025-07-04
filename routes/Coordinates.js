@@ -61,33 +61,37 @@ router.post("/addPoint", CoordinatesCtrl.newPoint);
  * /coordinates/addPolygon:
  *   post:
  *     summary: افزودن محدوده جدید (Polygon)
- *     tags:
- *       - Coordinates
+ *     description: |
+ *       ایجاد یک محدوده چندضلعی جدید با تبدیل مختصات از EPSG:32639 به WGS84
+ *       - مختصات باید به صورت آرایه‌ای از نقاط ارسال شود
+ *       - نقطه اول و آخر باید یکسان باشند (حلقه بسته)
+ *     tags: [Coordinates]
  *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
- *             required:
- *               - coordinates
+ *             required: [coordinates]
  *             properties:
  *               coordinates:
  *                 type: array
- *                 description: آرایه‌ای از حلقه‌ها (rings)، هر حلقه آرایه‌ای از مختصات [x, y] در EPSG:32639
+ *                 description: آرایه‌ای از نقاط در سیستم مختصات EPSG:32639
  *                 items:
  *                   type: array
  *                   items:
  *                     type: number
- *               example:
- *                 coordinates:
- *                   - - [450000, 3800000]
- *                     - [450100, 3800000]
- *                     - [450100, 3800100]
- *                     - [450000, 3800000]
+ *                     format: double
+ *                   minItems: 2
+ *                   maxItems: 2
+ *                 example:
+ *                   - [450000, 3800000]
+ *                   - [450100, 3800000]
+ *                   - [450100, 3800100]
+ *                   - [450000, 3800000]
  *     responses:
  *       "201":
- *         description: محدوده جدید با موفقیت اضافه شد
+ *         description: محدوده با موفقیت ایجاد شد
  *         content:
  *           application/json:
  *             schema:
@@ -97,24 +101,9 @@ router.post("/addPoint", CoordinatesCtrl.newPoint);
  *                   type: string
  *                   example: "محدوده جدید با موفقیت اضافه شد"
  *                 data:
- *                   type: object
- *                   properties:
- *                     _id:
- *                       type: string
- *                     area:
- *                       type: object
- *                       properties:
- *                         type:
- *                           type: string
- *                           example: "Polygon"
- *                         coordinates:
- *                           type: array
- *                           items:
- *                             type: array
- *                             items:
- *                               type: number
+ *                   $ref: '#/components/schemas/Polygon'
  *       "400":
- *         description: خطای ورودی
+ *         description: خطای اعتبارسنجی
  *         content:
  *           application/json:
  *             schema:
@@ -122,9 +111,11 @@ router.post("/addPoint", CoordinatesCtrl.newPoint);
  *               properties:
  *                 response:
  *                   type: string
- *                   example: "مختصات اولیه با مختصات آخر مساوی نیست. این فرمت قانون ثبت محدوده است."
+ *                   enum:
+ *                     - "ورودی باید یک ارایه از چند مختصات باشد"
+ *                     - "مختصات اولیه با مختصات آخر مساوی نیست. این فرمت قانون ثبت محدوده است."
  *       "500":
- *         description: خطای داخلی سرور
+ *         description: خطای سرور
  *         content:
  *           application/json:
  *             schema:

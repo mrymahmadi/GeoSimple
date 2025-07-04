@@ -10,6 +10,7 @@ const server = new http.Server(app);
 const log = console.log;
 const os = require("os");
 const mongoose = require("mongoose");
+
 const totalMemory = os.totalmem();
 const freeMemory = os.freemem();
 log("totalMemory : ".red + totalMemory);
