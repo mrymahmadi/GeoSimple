@@ -5,5 +5,5 @@
 After cloning the project, just run:
 
 ```
-npm install
+npm start
 ```
